@@ -167,7 +167,7 @@ A partial proof of correctness of the orthogonal iteration algorithm is given as
 #theorem[
   If the orthogonal iteration algorithm converges, the diagonal entries of $R_k$ contain the
   eigenvalues of $A$.
-]
+] <thm1>
 #proof[
   Because $P_(k+1)$ is orthogonal, we can rewrite @eq1 as:
 
@@ -190,21 +190,83 @@ Proving the convergence of the orthogonal iteration algorithm is beyond the scop
 
 == Recurrence magic <recur>
 
-We now
+Notice that in the orthogonal iteration algorithm, the orthogonal matrix $P_k$ is what gets passed
+around between two consecutive iterations. However, $P_k$ does not necessarily contain any useful
+information other than the fact that it is orthogonal and that it spans the column space of $A$.
+Specifically, it does not contain the eigenvectors of $A$.
 
+In order to find the eigenvalues of $A$, we need to extract them from $R_k$, which is _only_ equal
+to $P_k^TT A P_k$ _at convergence_. The canonical version of the QR algorithm mitigates this
+inconvenience by translating the orthogonal iteration algorithm into a recurrence relationship that
+produces a matrix which is _always_ similar to $A$. As a result, we can keep executing this
+algorithm and directly read off the answer once the matrix has converged.
+
+Define the matrix
+
+$
+  A_k = P_k^TT A P_k
+$
+
+(Note that this is true by definition regardless of whether $P_k$ has converged.)
+
+We can plug in @eq1 to get:
+
+$
+  A_k = P_k^TT (A P_k) = P_k^TT P_(k+1) R_(k+1)
+$
+
+Let us define the orthogonal matrix $Q_(k+1) = P_k^TT P_(k+1)$ using the fact that the product of
+two orthogonal matrices is also orthogonal ($(A B)^(-1) = B^(-1) A^(-1) = B^TT A^TT = (A B)^TT$).
+Therefore, $A_k$ itself can now be written as a QR factorization:
+
+$
+  A_k = Q_(k+1) R_(k+1)
+$
+
+Now consider $A_(k+1)$ and attempt to form a recurrence relation:
+
+$
+  A_(k+1) & = P_(k+1)^TT A P_(k+1) \
+          & = P_(k+1)^TT P_k A_k P_k^TT P_(k+1) \
+          & = Q_(k+1)^TT A_k Q_(k+1) \
+          & = Q_(k+1)^TT Q_(k+1) R_(k+1) Q_(k+1) \
+          & = R_(k+1) Q_(k+1)
+$
+
+Putting everything together, we have:
+
+$
+  A_k = Q_(k+1) R_(k+1) \
+  R_(k+1) Q_(k+1) = A_(k+1)
+$ <eq3>
+
+@eq3 is the essence of the QR algorithm:
+
++ Start with $A_0 = A$.
++ Find the QR factorization $A_k = Q_(k+1) R_(k+1)$.
++ Reverse the order to find $A_(k+1) = R_(k+1) Q_(k+1)$. Go to step 2.
+
+If the algorithm converges, we have $Q_(k+1) = P_k^TT P_(k+1) approx P_k^TT P_k = bb(1)_n$.
+Therefore $A_k approx R_k$, and we can read off the diagonal entries of $A_k$ to find the
+eigenvalues by @thm1.
+
+== Example
 
 = Improving the QR algorithm
 
+= References
 
-
-
-
-https://web.stanford.edu/class/cme335/lecture4
-https://www.cs.cornell.edu/~bindel/class/cs6210-f12/notes/lec24.pdf
-https://www.cs.cornell.edu/~bindel/class/cs6210-f12/notes/lec25.pdf
-https://www.cs.cornell.edu/~bindel/class/cs6210-f12/notes/lec26.pdf
-https://en.wikipedia.org/wiki/QR_algorithm
-https://en.wikipedia.org/wiki/Schur_decomposition
-https://ocw.mit.edu/courses/18-065-matrix-methods-in-data-analysis-signal-processing-and-machine-learning-spring-2018/resources/lecture-12-computing-eigenvalues-and-singular-values/
-https://www.youtube.com/watch?v=BfGAmw9qKsM
-
++ Jim Lambers, Advanced Topics in Numerical Linear Algebra,
+  https://web.stanford.edu/class/cme335/lecture4
++ David Bindle, Matrix Computations,
+  https://www.cs.cornell.edu/~bindel/class/cs6210-f12/notes/lec24.pdf
++ David Bindle, Matrix Computations,
+  https://www.cs.cornell.edu/~bindel/class/cs6210-f12/notes/lec25.pdf
++ David Bindle, Matrix Computations,
+  https://www.cs.cornell.edu/~bindel/class/cs6210-f12/notes/lec26.pdf
++ Gilbert Strang, Computing Eigenvalues and Singular Values,
+  https://ocw.mit.edu/courses/18-065-matrix-methods-in-data-analysis-signal-processing-and-machine-learning-spring-2018/resources/lecture-12-computing-eigenvalues-and-singular-values/
++ Martijn Anthonissen, QR algorithm for computing eigenvalues,
+  https://www.youtube.com/watch?v=BfGAmw9qKsM
++ Wikipedia, QR algorithm, https://en.wikipedia.org/wiki/QR_algorithm
++ Wikipedia, Schur decomposition, https://en.wikipedia.org/wiki/Schur_decomposition
