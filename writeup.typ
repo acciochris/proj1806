@@ -3,6 +3,8 @@
 
 #set page(paper: "us-letter")
 #set math.equation(numbering: "(1)")
+#set math.mat(delim: "[")
+#set math.vec(delim: "[")
 #let (
   theorem,
   lemma,
@@ -251,6 +253,70 @@ Therefore $A_k approx R_k$, and we can read off the diagonal entries of $A_k$ to
 eigenvalues by @thm1.
 
 == Example
+
+Consider
+
+$
+                        A & = mat(2, 1; 1, 2) \
+  det(A - lambda bb(1)_2) & = (2 - lambda)^2 - 1 = 0 \
+              => lambda_1 & = 3, lambda_2 = 1
+$
+
+Now let's run the QR algorithm. Let $A_0 = A$. Gram-Schmidt gives:
+
+#columns(2)[
+  $
+    vv(q)_1 & = 1/sqrt(5) vec(2, 1) \
+    vv(v)_2 & = vec(1, 2) - 1/5 vec(2, 1) mat(2, 1) vec(1, 2) \
+            & = 1/5 vec(-3, 6) \
+    vv(q)_2 & = vv(v)_2 / abs(vv(v)_2) = 1/sqrt(5) vec(1, -2) \
+  $
+  $
+         Q_1 & = 1/sqrt(5) mat(2, 1; 1, -2) \
+         R_1 & = Q_1^(-1) A = 1/sqrt(5) mat(5, 4; 0, -3) \
+         A_1 & = R_1 Q_1 \
+             & = 1/sqrt(5) mat(5, 4; 0, -3) 1/sqrt(5) mat(2, 1; 1, -2) \
+             & = 1/5 mat(14, -3; -3, 6) \
+    lambda_1 & approx 14/5 = 2.8 \
+    lambda_2 & approx 6/5 = 1.2 \
+  $
+]
+
+A second iteration gives:
+
+$
+       Q_2 & = 1/sqrt(205) mat(14, 3; -3, 14) \
+       R_2 & = 1/sqrt(205) mat(41, -12; 0, 15) \
+       A_2 & = R_2 Q_2 \
+           & = 1/41 mat(122, -9; -9, 42) \
+  lambda_1 & approx 122/41 approx 2.976 \
+  lambda_2 & approx 42/41 approx 1.024 \
+$
+
+Computer simulation using Python gives the following eigenvalues for further iterations:
+
+#align(center, table(
+  columns: 8,
+  $k$, ..range(7).map(n => $#n$),
+  $lambda_1$,
+  $2.00000000$,
+  $2.80000000$,
+  $2.97560976$,
+  $2.99726027$,
+  $2.99969521$,
+  $2.99996613$,
+  $2.99999624$,
+  $lambda_2$,
+  $2.00000000$,
+  $1.20000000$,
+  $1.02439024$,
+  $1.00273973$,
+  $1.00030479$,
+  $1.00003387$,
+  $1.00000376$,
+))
+
+As we can see, the two eigenvalues converge fairly quickly to their precise values $3$ and $1$.
 
 = Improving the QR algorithm
 
