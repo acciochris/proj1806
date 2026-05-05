@@ -20,7 +20,7 @@
   author: "Chris Liu",
   details: (
     course: "ES.1806 Linear Algebra",
-    instructor: "Arthur",
+    instructor: "Arthur Parzygnat",
   ),
 )
 
