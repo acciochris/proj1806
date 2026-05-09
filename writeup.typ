@@ -320,6 +320,14 @@ As we can see, the two eigenvalues converge fairly quickly to their precise valu
 
 = Improving the QR algorithm
 
+The QR algorithm can be improved in many ways, including but not limited to:
+
+- Reducing the matrix to upper Hessenberg form (almost triangular) before running the algorithm.
+  This reduces the computational complexity of the algorithm.
+- Running the algorithm on a shifted matrix ($A - s bb(1)$) to maximize the convergence rate.
+
+A thorough discussion of these improvements could be an interesting idea for future projects.
+
 = References
 
 + Jim Lambers, Advanced Topics in Numerical Linear Algebra,

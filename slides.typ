@@ -190,6 +190,25 @@ Python simulation:
   $1.00000376$,
 ))
 
+== Improving the QR algorithm (if time)
+
+- Upper Hessenberg Form reduces computational complexity:
+
+  $
+    mat(
+      a_11, a_12, a_13, a_14;
+      a_21, a_22, a_23, a_24;
+      0, a_32, a_33, a_34;
+      0, 0, a_43, a_44;
+    )
+  $
+
+- Shifting the matrix gives faster convergence:
+
+  $
+    A - s bb(1)
+  $
+
 == References
 
 + Jim Lambers, Advanced Topics in Numerical Linear Algebra,
