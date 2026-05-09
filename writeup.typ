@@ -28,6 +28,11 @@
 
 #set page(numbering: "1")
 #counter(page).update(1)
+#set heading(numbering: "1.1")
+#show heading.where(level: 2): it => [
+  #set text(size: 18pt, weight: "semibold", fill: rgb(50, 50, 50))
+  #block(above: 1.2em, below: 0.8em)[#counter(heading).display(it.numbering) #it.body]
+]
 
 = Introduction
 
@@ -65,24 +70,23 @@ such that $A = X B X^(-1)$.
 
 == Finding a single eigenvalue <eigen1>
 
-While there is no simple method of finding all eigenvalues of an arbitrarily large matrix. There is
-a simple algorithm to find the eigenvalue with the largest magnitude. For the sake of simplicity, we
-assume the $n times n$ matrix $A$ is has $n$ _real, positive, distinct_ eigenvalues. We also assume
-the eigenvalues $lambda_1, lambda_2, ..., lambda_n$ are arranged in strictly decreasing order, and
-that their corresponding eigenvectors are $vv(v)_1, vv(v)_1, ..., vv(v)_n$. Suppose the eigenvalue
-decomposition $A = X Lambda X^(-1)$ also follows this order.
+While it is difficult to find _all_ eigenvalues of an arbitrarily large matrix, there is a
+straightforward algorithm to find the eigenvalue with the largest magnitude. For the sake of
+simplicity, we assume the $n times n$ matrix $A$ has $n$ _real, positive, distinct_ eigenvalues. We
+also assume the eigenvalues $lambda_1, lambda_2, ..., lambda_n$ are arranged in strictly decreasing
+order, and that their corresponding eigenvectors are $vv(v)_1, vv(v)_1, ..., vv(v)_n$. Suppose the
+eigenvalue decomposition $A = X Lambda X^(-1)$ also follows this order.
 
-Suppose we have a generic $n times 1$ vector $vv(x)$. We can rewrite the quantity $A^k vv(x)$, i.e.
-$A$ applied to $vv(x)$ $k$ times as follows:
+Consider a generic $n times 1$ vector $vv(x)$. We can rewrite the quantity $A^k vv(x)$ as follows:
 
 $
   A^k vv(x) = (X Lambda X^(-1))^k vv(x) = X Lambda^k X^(-1) vv(x)
 $
 
 What does this expression mean? $X^(-1) vv(x)$ is the coordinates of $vv(x)$ in the eigenbasis, so
-$X Lambda^k X^(-1) vv(x)$ would be the linear combination of the eigenvectors of $A$ where the
-coefficient of each $vv(v)_i$ is given by the product of $lambda_i^k$ and the $i$th coordinate of
-$vv(x)$ in the eigenbasis. To put it more clearly, suppose
+$X Lambda^k X^(-1) vv(x)$ would be a linear combination of the eigenvectors where the coefficient of
+each $vv(v)_i$ is given by the product of $lambda_i^k$ and the $i$th coordinate of $vv(x)$ (in the
+eigenbasis). To put it more clearly, suppose
 
 $
   vv(x) = sum_(i=1)^n c_i vv(v)_i = X vec(c_1, dots.v, c_n),
@@ -108,7 +112,7 @@ $k -> infinity$. The only remaining term is $c_1 vv(v)_1$, and we have now found
 $A$!
 
 To summarize, the following algorithm finds the eigenvector with the largest eigenvalue for an
-$n times n$ matrix $A$ (with several limitations described at the beginning of this section):
+$n times n$ matrix $A$:
 
 + Start with any $n times 1$ vector $vv(x)$.
 + Multiply $vv(x)$ by $A$.
@@ -133,13 +137,13 @@ of the orthogonal iteration algorithm using recurrence relationships.
 
 The basic idea of orthogonal iteration is that instead of finding a single eigenvector of $A$, we
 find the subspace spanned by the eigenvectors, i.e. $CC(X)$. If we maintain the same assumptions as
-@eigen1 (real, positive, distinct eigenvalues), $A$ is diagonalizable, and we have $CC(X) = CC(A)$.
-In other words, the eigenvectors span the column space of $A$.
+@eigen1 (real, positive, distinct eigenvalues), then $A$ is diagonalizable, and we have
+$CC(X) = CC(A)$. In other words, the eigenvectors span the column space of $A$.
 
-To actually implement the algorithm, we need to maintain a matrix whose columns serve as the basis
-of the vector space we're trying to find. Specifically, we maintain an orthogonal matrix $P_k$ (it
-is *not* called $Q_k$ for a reason that will become evident in @recur). The subscript $k$ refers to
-the $k$th iteration of the algorithm.
+To actually implement the algorithm, we need to keep track of a matrix whose columns serve as the
+basis of the vector space we're trying to find. Specifically, we maintain an orthogonal matrix $P_k$
+(it is *not* called $Q_k$ for a reason that will become evident in @recur). The subscript $k$ refers
+to the $k$th iteration of the algorithm.
 
 The algorithm is as follows:
 
@@ -198,13 +202,13 @@ Proving the convergence of the orthogonal iteration algorithm is beyond the scop
 Notice that in the orthogonal iteration algorithm, the orthogonal matrix $P_k$ is what gets passed
 around between two consecutive iterations. However, $P_k$ does not necessarily contain any useful
 information other than the fact that it is orthogonal and that it spans the column space of $A$.
-Specifically, it does not contain the eigenvectors of $A$.
+Specifically, it does *not* contain the eigenvectors of $A$.
 
-In order to find the eigenvalues of $A$, we need to extract them from $R_k$, which is _only_ equal
-to $P_k^TT A P_k$ _at convergence_. The canonical version of the QR algorithm mitigates this
-inconvenience by translating the orthogonal iteration algorithm into a recurrence relationship that
-produces a matrix which is _always_ similar to $A$. As a result, we can keep executing this
-algorithm and directly read off the answer once the matrix has converged.
+In order to find the eigenvalues of $A$, we need to extract them from $R_k$, which is _only_ similar
+to $A$ _at convergence_. The canonical version of the QR algorithm mitigates this inconvenience by
+translating the orthogonal iteration algorithm into a recurrence relationship that produces a matrix
+which is _always_ similar to $A$. As a result, we can keep executing this algorithm and directly
+read off the answer once the matrix has converged.
 
 Define the matrix
 
@@ -221,7 +225,7 @@ $
 $
 
 Let us define the orthogonal matrix $Q_(k+1) = P_k^TT P_(k+1)$ using the fact that the product of
-two orthogonal matrices is also orthogonal ($(A B)^(-1) = B^(-1) A^(-1) = B^TT A^TT = (A B)^TT$).
+two orthogonal matrices is also orthogonal (proof: $(A B)^(-1) = B^(-1) A^(-1) = B^TT A^TT = (A B)^TT$).
 Therefore, $A_k$ itself can now be written as a QR factorization:
 
 $
