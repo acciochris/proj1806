@@ -26,6 +26,9 @@
   ),
 )
 
+#set page(numbering: "1")
+#counter(page).update(1)
+
 = Introduction
 
 Eigenvalues and eigenvectors are an immensely useful aspect of linear algebra in that they have
