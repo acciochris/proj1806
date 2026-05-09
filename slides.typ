@@ -138,13 +138,13 @@ $
     vv(q)_1 & = 1/sqrt(5) vec(2, 1) \
     vv(v)_2 & = vec(1, 2) - 1/5 vec(2, 1) mat(2, 1) vec(1, 2) \
             & = 1/5 vec(-3, 6) \
-    vv(q)_2 & = vv(v)_2 / abs(vv(v)_2) = 1/sqrt(5) vec(1, -2) \
+    vv(q)_2 & = vv(v)_2 / abs(vv(v)_2) = 1/sqrt(5) vec(-1, 2) \
   $
   $
-         Q_1 & = 1/sqrt(5) mat(2, 1; 1, -2) \
-         R_1 & = Q_1^(-1) A = 1/sqrt(5) mat(5, 4; 0, -3) \
+         Q_1 & = 1/sqrt(5) mat(2, -1; 1, 2) \
+         R_1 & = Q_1^(-1) A = 1/sqrt(5) mat(5, 4; 0, 3) \
          A_1 & = R_1 Q_1 \
-             & = 1/5 mat(14, -3; -3, 6) \
+             & = 1/5 mat(14, 3; 3, 6) \
     lambda_1 & approx 14/5 = mark(2.8, color: #red) \
     lambda_2 & approx 6/5 = mark(1.2, color: #red) \
   $
@@ -152,14 +152,14 @@ $
 
 #columns(2)[
   $
-    Q_2 & = 1/sqrt(205) mat(14, 3; -3, 14) \
-    R_2 & = 1/sqrt(205) mat(41, -12; 0, 15) \
+    Q_2 & = 1/sqrt(205) mat(14, -3; 3, 14) \
+    R_2 & = 1/sqrt(205) mat(41, 12; 0, 15) \
   $
 
   #colbreak()
 
   $
-         A_2 & = R_2 Q_2 = 1/41 mat(122, -9; -9, 42) \
+         A_2 & = R_2 Q_2 = 1/41 mat(122, 9; 9, 42) \
     lambda_1 & approx 122/41 approx mark(2.976, color: #red) \
     lambda_2 & approx 42/41 approx mark(1.024, color: #red) \
   $
