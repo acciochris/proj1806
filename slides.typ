@@ -77,12 +77,11 @@ $
 
 === Algorithm
 
-+ Choose any $n times n$ matrix $P_0$. Usually we pick $P_0 = bb(1)_n$ for the purpose of
-  simplicity.
++ Choose any $n times n$ matrix $P_0$. Usually we pick $P_0 = bb(1)_n$ for simplicity.
 + Calculate $A P_k$.
 + Decompose the result into its QR factorization $P_(k+1)R_(k+1)$. Go to step 2.
 
-If the algorithm converges, the diagonal entries of $R_k$ contain the eigenvalues of $A$:
+If the algorithm converges, diagonal entries of $R_k$ contain the eigenvalues of $A$:
 
 $
   P_(k+1)R_(k+1) & = A P_k \
