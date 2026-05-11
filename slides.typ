@@ -103,7 +103,7 @@ similar to $A$?
 
 Trick: Let $A_k = P_k^TT A P_k$. Define $Q_(k+1) = P_k^TT P_(k+1)$.
 
-#align(center)[_... recurrence magic omitted (see writeup) ..._]
+#align(center)[_... recurrence magic omitted (see board if time) ..._]
 
 $
   mark(A_k = Q_(k+1) R_(k+1), color: #red) \
@@ -191,6 +191,12 @@ Python simulation:
 
 == Improving the QR algorithm (if time)
 
+- Shift-inverting the matrix gives faster convergence:
+
+  $
+    (A - s bb(1))^(-1)
+  $
+
 - Upper Hessenberg Form reduces computational complexity:
 
   $
@@ -200,12 +206,6 @@ Python simulation:
       0, a_32, a_33, a_34;
       0, 0, a_43, a_44;
     )
-  $
-
-- Shifting the matrix gives faster convergence:
-
-  $
-    A - s bb(1)
   $
 
 == References
