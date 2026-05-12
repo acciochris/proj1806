@@ -226,5 +226,3 @@ Python simulation:
   https://www.youtube.com/watch?v=BfGAmw9qKsM
 + Wikipedia, QR algorithm, https://en.wikipedia.org/wiki/QR_algorithm
 + Wikipedia, Schur decomposition, https://en.wikipedia.org/wiki/Schur_decomposition
-
-
