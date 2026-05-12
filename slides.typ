@@ -198,6 +198,8 @@ Python simulation:
   $
 
 - Upper Hessenberg Form reduces computational complexity:
+  - Householder reflections
+  - Givens rotations
 
   $
     mat(
